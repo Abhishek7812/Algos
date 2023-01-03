@@ -1,71 +1,69 @@
-#include<bits/stdc++.h>
+// C++ program to delete middle
+// of a linked list
+#include <bits/stdc++.h>
 using namespace std;
 
-class Node{
-    public:
-     int data;
-     Node* next = NULL;
+struct Node {
+	int data;
+	struct Node* next;
 };
 
- Node* midDeletion(Node* x)
+struct Node* deleteMid(struct Node* head)
 {
-    Node* head = x;
-    Node* slow=x;
-    Node* p = NULL;
-    Node* fast = x;
+	if (head == NULL)
+		return NULL;
+	if (head->next == NULL) {
+		delete head;
+		return NULL;
+	}
 
-    while(fast->next != NULL)
-    {
-        // cout << 'a' << endl;
-            
-        p = slow;
-        slow = slow->next;
-        fast = fast->next->next;
-        // cout << head->data << endl;
-    }
-    // cout << head->data << endl;
-    p->next = slow->next;
-    // cout << head->data << endl;
-    // while(x->next !=NULL)
-    // {
-    //      cout<<x->data<<endl;
-    //      x=x->next;
-    // }
-    return x;
+	struct Node* slow_ptr = head;
+	struct Node* fast_ptr = head;
+
+struct Node* prev;
+	while (fast_ptr != NULL && fast_ptr->next != NULL) {
+		fast_ptr = fast_ptr->next->next;
+		prev = slow_ptr;
+		slow_ptr = slow_ptr->next;
+	}
+
+	prev->next = slow_ptr->next;
+	delete slow_ptr;
+
+	return head;
 }
+
+void printList(struct Node* ptr)
+{
+	while (ptr != NULL) {
+		cout << ptr->data << "->";
+		ptr = ptr->next;
+	}
+	cout << "NULL\n";
+}
+
+Node* newNode(int data)
+{
+	struct Node* temp = new Node;
+	temp->data = data;
+	temp->next = NULL;
+	return temp;
+}
+
 int main()
 {
-    Node* x = new Node();
-    x->data =1;
-    x->next = new Node();
-    x->next->data = 2;
+	struct Node* head = newNode(1);
+	head->next = newNode(2);
+	head->next->next = newNode(3);
+	head->next->next->next = newNode(4);
 
-    x->next->next = new Node();
-    x->next->next->data = 3;
-    x->next->next->next = new Node();
-    x->next->next->next->data = 4;
-    x->next->next->next->next = new Node();
-    x->next->next->next->next->data = 5;
-    x->next->next->next->next->next = new Node();
-    x->next->next->next->next->next->data = 6;
-    x->next->next->next->next->next->next = new Node();
-    x->next->next->next->next->next->next->data = 7;
-    x->next->next->next->next->next->next->next =NULL;
-    
-    // while(x->next !=NULL)
-    // {
-    //      cout<<x->data<<endl;
-    //      x=x->next;
-    // }
-    
-    Node* R = midDeletion(x);
-    
-    
-    while(R->next !=NULL)
-    {
-         cout<<R->data<<endl;
-         R=R->next;
-    }
-    
-    
+	cout << "Given Linked List\n";
+	printList(head);
+
+	head = deleteMid(head);
+
+	cout << "Linked List after deletion of middle\n";
+	printList(head);
+
+	return 0;
 }
